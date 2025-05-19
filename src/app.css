@@ -1,0 +1,18 @@
+
+@font-face {
+  font-family: "marioFont";
+  src: url("./assets/font/SuperMario256.ttf");
+}
+
+body, html, #root {
+  height: 100%;
+  background-image: url("./assets/images/background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+h1, .marioFont {
+  font-family: "marioFont";
+  -webkit-text-stroke: 2px black;
+}
