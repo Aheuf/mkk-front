@@ -5,7 +5,11 @@ export class PlayerService {
   BASE_URL = "http://localhost:3000";
 
   async getPlayer(prenom:string, nom:string):Promise<Player> {
-    return (await axios.get(`${this.BASE_URL}/players/${nom}`)).data;
+    const player: Player = (await axios.get(`${this.BASE_URL}/players/${nom}`)).data;
+    if(player.prenom !== prenom){
+      console.log("problème de remontée de joueur");
+    }
+    return player;
   }
 
   async getPlayers(player:Player):Promise<Player[]> {
