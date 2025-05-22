@@ -14,7 +14,7 @@ export default function App() {
       if(player.role === "PLAYER"){
         navigate("/player", {state: player});
       } else {
-        playerService.getPlayers(player).then(players => {
+        playerService.getPlayers().then(players => {
           navigate("/admin", {state: players});
         });
       }

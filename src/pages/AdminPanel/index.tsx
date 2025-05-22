@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import type { Player } from "../../models/Player";
+import { PlayerService } from "../../services/PlayerService";
 
 export default function AdminPanel() {
+  const playerService = new PlayerService();
   let players: Player[] = useLocation().state?.filter( (player:Player) => player.role === "PLAYER") || [];
   players = players.sort((a,b) => b.pv - a.pv)
   const navigate = useNavigate();
@@ -14,9 +16,13 @@ export default function AdminPanel() {
     }
   }, [players.length, navigate]);
 
+  const handleRefresh= async () => {
+    players = (await playerService.getPlayers()).sort((a,b) => b.pv - a.pv);
+  };
+
   return (
     <div className="grid grid-cols-1 justify-items-center items-center text-white p-5">
-      <h1 className="text-5xl">Mario Kart Kup 2025</h1>
+      <h1 className="text-5xl">Mario Kart Kup 2025</h1><button onClick={handleRefresh}>R</button>
       <table className="table-auto bg-white/50 marioFont text-3xl w-2/3 rounded">
         <thead>
           <tr>

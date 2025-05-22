@@ -12,12 +12,8 @@ export class PlayerService {
     return player;
   }
 
-  async getPlayers(player:Player):Promise<Player[]> {
-    if(player.role === "ADMIN") {
-      return (await axios.get(`${this.BASE_URL}/players`)).data;
-    }
-    console.error("vous n'avez pas les droits necessaires, dommage");
-    return [];
+  async getPlayers():Promise<Player[]> {
+    return (await axios.get(`${this.BASE_URL}/players`)).data;
   }
 
   async updatePlayer(playerToUpdate: Player):Promise<Player> {
