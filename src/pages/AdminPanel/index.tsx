@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import type { Player } from "../../models/Player";
 import { PlayerService } from "../../services/PlayerService";
+import heartFull from "../../assets/images/heartFull.png";
+import heartEmpty from "../../assets/images/heartEmpty.png";
 
 export default function AdminPanel() {
   const playerService = new PlayerService();
@@ -35,8 +37,8 @@ export default function AdminPanel() {
             <tr className={`border-2 border-black ${ player.pv === 0 && "text-slate-500 bg-slate-500"}`}>
               <td>{`${player.prenom} ${player.nom.charAt(0)}.`}</td>
               <td className={"flex justify-center"}>
-                {Array.from(Array(player.pv), () => <img src="src/assets/images/heartFull.webp" className="size-14"/>)}
-                {Array.from(Array(3 - player.pv), () => <img src="src/assets/images/heartEmpty.webp" className="size-14"/>)}
+                {Array.from(Array(player.pv), () => <img src={heartFull} className="size-14"/>)}
+                {Array.from(Array(3 - player.pv), () => <img src={heartEmpty} className="size-14"/>)}
               </td>
             </tr>
           )}
