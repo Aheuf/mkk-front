@@ -1,11 +1,11 @@
 import axios from "axios";
 import type { Player } from "../models/Player";
+import { BASE_URL } from "../constant";
 
 export class PlayerService {
-  BASE_URL = "http://localhost:3000";
 
   async getPlayer(prenom:string, nom:string):Promise<Player> {
-    const player: Player = (await axios.get(`${this.BASE_URL}/players/${nom}`)).data;
+    const player: Player = (await axios.get(`${BASE_URL}/players/${nom}`)).data;
     if(player.prenom !== prenom){
       console.log("problème de remontée de joueur");
     }
@@ -13,10 +13,10 @@ export class PlayerService {
   }
 
   async getPlayers():Promise<Player[]> {
-    return (await axios.get(`${this.BASE_URL}/players`)).data;
+    return (await axios.get(`${BASE_URL}/players`)).data;
   }
 
   async updatePlayer(playerToUpdate: Player):Promise<Player> {
-    return ( await axios.patch(`${this.BASE_URL}/players/${playerToUpdate.nom}`, {pv:playerToUpdate.pv})).data;
+    return ( await axios.patch(`${BASE_URL}/players/${playerToUpdate.nom}`, {pv:playerToUpdate.pv})).data;
   }
 }
