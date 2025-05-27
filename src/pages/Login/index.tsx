@@ -9,6 +9,12 @@ export default function Login({connectPlayer}:LoginProps) {
   const [prenom, setPrenom] = useState<string>("");
   const [nom, setNom] = useState<string>("");
 
+  const socket = new WebSocket(`ws://localhost:3000`);
+
+  socket.addEventListener('open', () => {
+    console.log('Connected to WebSocket server.');
+  });
+
   const handleSubmit = (event:FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     connectPlayer(prenom, nom);
