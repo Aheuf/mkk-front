@@ -14,5 +14,6 @@ body, html, #root {
 
 h1, .marioFont {
   font-family: "marioFont";
+  letter-spacing: 0.2rem;
   -webkit-text-stroke: 2px black;
 }

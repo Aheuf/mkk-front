@@ -1,1 +1,2 @@
-export const BASE_URL = window.location.href.includes("localhost") ? "http://localhost:3000" : "https://mk-api.grosbi.de";
+export const WEB_SOCKET_URL = window.location.href.includes("localhost") ? "ws:localhost:3000" : "wss:mk-api.grosbi.de"
+export const BASE_URL_SERVICE =  window.location.href.includes("localhost") ? "http://localhost:3000" : "https://mk-api.grosbi.de";

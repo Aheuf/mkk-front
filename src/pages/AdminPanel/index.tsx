@@ -1,30 +1,46 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import type { Player } from "../../models/Player";
 import { PlayerService } from "../../services/PlayerService";
 import heartFull from "../../assets/images/heartFull.png";
 import heartEmpty from "../../assets/images/heartEmpty.png";
+import { WEB_SOCKET_URL } from "../../constant";
 
 export default function AdminPanel() {
-  const playerService = new PlayerService();
-  let players: Player[] = useLocation().state?.filter( (player:Player) => player.role === "PLAYER") || [];
-  players = players.sort((a,b) => b.pv - a.pv)
+  const [playersList, setPlayerList] = useState<Player[]>([]);
+  const players = useLocation().state;
+  const [isrequestQueued, setIsRequestQueued] = useState<boolean>(false);
   const navigate = useNavigate();
+  const playerService = useMemo(() => new PlayerService(), []);
+
 
   useEffect(() => {
-    if(!players.length){
-      console.info("no admin connected");
-      navigate(-1);
-    }
-  }, [players.length, navigate]);
+    setPlayerList(players.filter( (player:Player) => player.role === "PLAYER").sort((a: Player,b: Player) => b.pv - a.pv) || []);
+  }, [playersList.length, navigate, players]);
 
-  const handleRefresh= async () => {
-    players = (await playerService.getPlayers()).sort((a,b) => b.pv - a.pv);
-  };
+  useEffect(() => {
+    const socket = new WebSocket(WEB_SOCKET_URL);
+
+    socket.onmessage = () => {
+      try {
+        console.info("demande de mise à jour reçu");
+        if(!isrequestQueued){
+          setTimeout(() => {
+              playerService.getPlayers().then(p => {
+                setPlayerList(p.filter( (player:Player) => player.role === "PLAYER").sort((a: Player,b: Player) => b.pv - a.pv))
+              });
+            setIsRequestQueued(false);
+          }, 10000)
+        }
+      } catch (err) {
+        console.error("Message WebSocket invalide :", err);
+      }
+    };
+  }, [])
 
   return (
     <div className="grid grid-cols-1 justify-items-center items-center text-white p-5">
-      <h1 className="text-5xl">Mario Kart Kup 2025</h1><button onClick={handleRefresh}>R</button>
+      <h1 className="text-5xl">Mario Kart Kup 2025</h1>
       <table className="table-auto bg-white/50 marioFont text-3xl w-2/3 rounded">
         <thead>
           <tr>
@@ -33,12 +49,12 @@ export default function AdminPanel() {
           </tr>
         </thead>
         <tbody className="text-center">
-          {players.map(player =>
-            <tr className={`border-2 border-black ${ player.pv === 0 && "text-slate-500 bg-slate-500"}`}>
+          {playersList.map((player, index) =>
+            <tr key={index} className={`border-2 border-black ${ player.pv === 0 && "text-slate-500 bg-slate-500"}`}>
               <td>{`${player.prenom} ${player.nom.charAt(0)}.`}</td>
               <td className={"flex justify-center"}>
-                {Array.from(Array(player.pv), () => <img src={heartFull} className="size-14"/>)}
-                {Array.from(Array(3 - player.pv), () => <img src={heartEmpty} className="size-14"/>)}
+                {Array.from(Array(player.pv), () => <img src={heartFull} key={`${player.nom}-heartFull-${Math.random() * 1000}`} className="size-14"/>)}
+                {Array.from(Array(3 - player.pv), () => <img src={heartEmpty} key={`${player.nom}-heartEmpty-${Math.random() * 1000}`} className="size-14"/>)}
               </td>
             </tr>
           )}
