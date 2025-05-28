@@ -30,7 +30,7 @@ export default function AdminPanel() {
                 setPlayerList(p.filter( (player:Player) => player.role === "PLAYER").sort((a: Player,b: Player) => b.pv - a.pv))
               });
             setIsRequestQueued(false);
-          }, 10000)
+          }, 5000)
         }
       } catch (err) {
         console.error("Message WebSocket invalide :", err);
