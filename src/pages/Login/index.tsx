@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import logo from "../../assets/images/logo-mk8.png";
+import logo from "../../../public/assets/images/logo-mk8.png";
 
 interface LoginProps {
   connectPlayer: (prenom:string, nom:string) => void;

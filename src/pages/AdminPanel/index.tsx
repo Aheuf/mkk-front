@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import type { Player } from "../../models/Player";
 import { PlayerService } from "../../services/PlayerService";
-import heartFull from "../../assets/images/heartFull.png";
-import heartEmpty from "../../assets/images/heartEmpty.png";
+import heartFull from "../../../public/assets/images/heartFull.png";
+import heartEmpty from "../../../public/assets/images/heartEmpty.png";
 import { WEB_SOCKET_URL } from "../../constant";
 
 export default function AdminPanel() {
