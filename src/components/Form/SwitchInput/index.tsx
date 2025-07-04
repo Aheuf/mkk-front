@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Description from "../Description";
 
 interface SwitchInputProps {
   options: [string, string];
@@ -6,6 +7,8 @@ interface SwitchInputProps {
   onChange: (value: string) => void;
   variant?: SWITCH_VARIANT;
   className?:string;
+  required?: boolean;
+  description?:string;
 }
 
 export enum SWITCH_VARIANT {
@@ -59,7 +62,7 @@ const variantClassMap: Record<SWITCH_VARIANT, string> = {
 };
 
 
-export default function SwitchInput({ options, defaultValue, onChange, variant, className }: SwitchInputProps) {
+export default function SwitchInput({ options, defaultValue, onChange, variant, className, required, description }: SwitchInputProps) {
   const [selectedValue, setSelectedValue] = useState<string>(defaultValue || options[0]);
   const colorScheme = variantClassMap[variant || SWITCH_VARIANT.SLATE] ;
 
@@ -72,22 +75,27 @@ export default function SwitchInput({ options, defaultValue, onChange, variant, 
   }
 
   return (
-    <div className={`inline-flex items-center ${className}`.trim()}>
-      <p className={`mr-3 ${selectedValue === options[0] ? "underline" : ""}`.trim()}>
-        {options[0]}
-      </p>
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input
-          type="checkbox"
-          className="sr-only peer"
-          onChange={handleChange}
-          defaultChecked={selectedValue === options[1]}
-        />
-        <div className={`group peer rounded-full duration-300 w-16 h-8 ring-2 after:duration-300 after:rounded-full after:absolute after:h-6 after:w-6 after:top-1 after:left-1 after:flex after:justify-center after:items-center peer-checked:after:translate-x-8 peer-hover:after:scale-90 ${colorScheme}`} />
-      </label>
-      <p className={`ml-3 ${selectedValue === options[1] ? "underline" : ""}`.trim()}>
-        {options[1]}
-      </p>
+    <div className="grid w-max">
+      {(description || required) && <Description description={description} required={required}/>}
+      <div className={`flex items-center ${className}`.trim()}>
+        <p className={`mr-3 ${selectedValue === options[0] ? "underline" : ""}`.trim()}>
+          {options[0]}
+        </p>
+        <label className="relative flex items-center cursor-pointer">
+          <input
+            id="SwitchInput"
+            type="checkbox"
+            className="sr-only peer"
+            onChange={handleChange}
+            defaultChecked={selectedValue === options[1]}
+            required={required}
+          />
+          <div className={`group peer rounded-full duration-300 w-16 h-8 ring-2 after:duration-300 after:rounded-full after:absolute after:h-6 after:w-6 after:top-1 after:left-1 after:flex after:justify-center after:items-center peer-checked:after:translate-x-8 peer-hover:after:scale-90 ${colorScheme}`} />
+        </label>
+        <p className={`ml-3 ${selectedValue === options[1] ? "underline" : ""}`.trim()}>
+          {options[1]}
+        </p>
+      </div>
     </div>
   );
 }
