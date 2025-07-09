@@ -12,17 +12,19 @@ interface SwitchInputProps {
   required?: boolean;
   description?:string;
   mode: SWITCH_MODE;
+  icons?:string[];
 }
 
-export default function SwitchInput({ options, defaultValue, onChange, variant, className, required, description, mode }: SwitchInputProps) {
+export default function SwitchInput({ options=["Option A","Option B"], defaultValue, onChange, variant, className, required, description, mode, icons }: SwitchInputProps) {
   return (
     <div className="grid w-max">
       {(description || required) && <Description description={description} required={required}/>}
       <div className={`flex items-center ${className}`.trim()}>
         { mode === SWITCH_MODE.BINARY_CHOICE ?
           <BinaryChoice
-            options={options || ["",""]}
+            options={options}
             onChange={onChange}
+            icons={icons}
             defaultValue={defaultValue as string}
             variant={variant}
           /> :

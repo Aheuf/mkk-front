@@ -12,7 +12,7 @@ export default meta;
 
 type Story = StoryObj<typeof SwitchInput>;
 
-const stubedOptions: [string, string] = ["Option A", "Option B"];
+const stubedOptions: [string, string] = ["Login", "Register"];
 
 export const Basic: Story = {
   render: () => (
@@ -80,83 +80,85 @@ export const WithDescriptionAndRequired: Story = {
   ),
 };
 
+export const WithIcons: Story = {
+  render: () => (
+    <SwitchInput
+      mode={SWITCH_MODE.BINARY_CHOICE}
+      options={stubedOptions}
+      description="description de l'input"
+      icons={["account_circle","person_edit"]}
+      required={true}
+      onChange={(selectedValue) => console.log(selectedValue)}
+    />
+  ),
+};
+
 export const Variants: Story = {
   render: () => (
     <>
       <div className="flex">
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.AMBER}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.BLUE}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.CYAN}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.EMERALD}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.FUSHSIA}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.GRAY}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.GREEN}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.INDIGO}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.LIME}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.NEUTRAL}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.ORANGE}
           onChange={(selectedValue) => console.log(selectedValue)}
@@ -165,77 +167,66 @@ export const Variants: Story = {
       <div className="flex">
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.PINK}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.PURPLE}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.RED}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.ROSE}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.SKY}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.SLATE}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.STONE}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.TEAL}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.VIOLET}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.YELLOW}
           onChange={(selectedValue) => console.log(selectedValue)}
         />
         <SwitchInput
           mode={SWITCH_MODE.BINARY_CHOICE}
-          options={["", ""]}
           className="m-1"
           variant={SWITCH_VARIANT.ZINC}
           onChange={(selectedValue) => console.log(selectedValue)}

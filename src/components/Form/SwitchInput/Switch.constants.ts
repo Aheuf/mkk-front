@@ -27,3 +27,4 @@ export enum SWITCH_MODE {
   BOOLEAN = "boolean",
   BINARY_CHOICE = "binaryChoice",
 }
+
