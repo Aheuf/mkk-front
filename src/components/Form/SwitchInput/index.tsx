@@ -31,6 +31,7 @@ export default function SwitchInput({ options=["Option A","Option B"], defaultVa
           <BooleanMode
             onChange={onChange}
             defaultValue={defaultValue as boolean}
+            icons={icons}
             required={required}
             variant={variant}
           />

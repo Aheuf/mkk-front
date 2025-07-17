@@ -72,6 +72,16 @@ export const WithDescriptionAndRequired: Story = {
   ),
 };
 
+export const WithIcons: Story = {
+  render: () => (
+    <SwitchInput
+      mode={SWITCH_MODE.BOOLEAN}
+      icons={["account_circle","person_edit"]}
+      onChange={(selectedValue) => console.log(selectedValue)}
+    />
+  ),
+};
+
 export const Variants: Story = {
   render: () => (
     <>

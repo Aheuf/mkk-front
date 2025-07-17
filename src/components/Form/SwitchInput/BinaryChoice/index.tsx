@@ -33,7 +33,7 @@ const variantClassMap: Record<SWITCH_VARIANT, string> = {
   [SWITCH_VARIANT.GRAY]: "bg-gray-100 ring-gray-300",
   [SWITCH_VARIANT.ZINC]: "bg-zinc-100 ring-zinc-300",
   [SWITCH_VARIANT.NEUTRAL]:"bg-neutral-100 ring-neutral-300",
-  [SWITCH_VARIANT.STONE]: "bg-stone-100 ring-stone-300",
+  [SWITCH_VARIANT.STONE]: "bg-stone-100 ring-stone-300"
 };
 
 const circleVariantClassMap: Record<SWITCH_VARIANT, string> = {
@@ -58,13 +58,13 @@ const circleVariantClassMap: Record<SWITCH_VARIANT, string> = {
   [SWITCH_VARIANT.GRAY]: "bg-gray-600",
   [SWITCH_VARIANT.ZINC]: "bg-zinc-600",
   [SWITCH_VARIANT.NEUTRAL]:"bg-neutral-600",
-  [SWITCH_VARIANT.STONE]: "bg-stone-600",
+  [SWITCH_VARIANT.STONE]: "bg-stone-600"
 };
 
-export default function BinaryChoice({ options, defaultValue, onChange, variant, required, icons }: BinaryChoiceProps) {
+export default function BinaryChoice({ options, defaultValue, onChange, variant=SWITCH_VARIANT.SLATE, required, icons }: BinaryChoiceProps) {
   const [selectedValue, setSelectedValue] = useState<string>( defaultValue || options[0] );
-  const colorScheme = variantClassMap[variant || SWITCH_VARIANT.SLATE];
-  const circleColor = circleVariantClassMap[variant || SWITCH_VARIANT.SLATE];
+  const colorScheme = variantClassMap[variant];
+  const circleColor = circleVariantClassMap[variant];
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value: string = e.target.checked ? options[1] : options[0];
@@ -88,13 +88,13 @@ export default function BinaryChoice({ options, defaultValue, onChange, variant,
           required={required}
         />
         <div className={`group peer rounded-full duration-300 w-16 h-8 ring-2 ${colorScheme}`}>
-          <span className={`absolute top-1 left-1 h-6 w-6 rounded-full ${circleColor} text-white flex text-center items-center justify-center transform transition-transform duration-300 ${selectedValue === options[1] ? "translate-x-8" : "translate-x-0"}`}>
+          <span className={`absolute top-1 left-1 h-6 w-6 rounded-full ${circleColor} flex text-center items-center justify-center transform transition-transform duration-300 ${selectedValue === options[1] ? "translate-x-8" : "translate-x-0"}`}>
             {icons &&
-              <span className="material-symbols-outlined">
+              <span className="text-white material-symbols-outlined">
                 {selectedValue === options[0] ? icons[0]: icons[1]}
               </span>
             }
-          </span>
+          </span> 
         </div>
       </label>
       <p className={`ml-3 ${selectedValue === options[1] ? "underline" : ""}`.trim()}>
