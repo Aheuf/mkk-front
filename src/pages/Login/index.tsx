@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from "react";
 import logo from "../../../public/assets/images/logo-mk8.png";
+import SwitchInput from "../../components/Form/SwitchInput";
+import { SWITCH_MODE } from "../../components/Form/SwitchInput/Switch.constants";
 
 interface LoginProps {
   connectPlayer: (prenom:string, nom:string) => void;
@@ -18,6 +20,7 @@ export default function Login({connectPlayer}:LoginProps) {
     <div className={`grid lg:grid-cols-2 grid-cols-1 justify-items-center items-center h-full`}>
       <img src={logo} className="h-1/3"/>
         <form className={`grid grid-cols-1 rounded-xl bg-white/50 p-10 gap-4 lg:w-1/2 lg:h-1/2`} onSubmit={(event) => handleSubmit(event)}>
+        <SwitchInput onChange={() => {}} mode={SWITCH_MODE.BINARY_CHOICE}/>
           <h1 className="text-3xl text-white text-center">connexion</h1>
           <input
             className="bg-white rounded-xl px-10 h-12"
