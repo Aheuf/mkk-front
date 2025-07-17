@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, type InputHTMLAttributes } from "react";
 import { SWITCH_VARIANT } from "../Switch.constants";
 
-interface BinaryChoiceProps {
+type OmittedProps = "onChange" | "defaultValue";
+
+interface BinaryChoiceProps extends Omit<InputHTMLAttributes<HTMLInputElement>, OmittedProps>{
   options: [string, string];
   icons?: string[];
   defaultValue?: string;
@@ -61,7 +63,7 @@ const circleVariantClassMap: Record<SWITCH_VARIANT, string> = {
   [SWITCH_VARIANT.STONE]: "bg-stone-600"
 };
 
-export default function BinaryChoice({ options, defaultValue, onChange, variant=SWITCH_VARIANT.SLATE, required, icons }: BinaryChoiceProps) {
+export default function BinaryChoice({ options, defaultValue, onChange, variant=SWITCH_VARIANT.SLATE, required, icons, ...props }: BinaryChoiceProps) {
   const [selectedValue, setSelectedValue] = useState<string>( defaultValue || options[0] );
   const colorScheme = variantClassMap[variant];
   const circleColor = circleVariantClassMap[variant];
@@ -86,6 +88,7 @@ export default function BinaryChoice({ options, defaultValue, onChange, variant=
           onChange={handleChange}
           defaultChecked={selectedValue === options[1]}
           required={required}
+          {...props}
         />
         <div className={`group peer rounded-full duration-300 w-16 h-8 ring-2 ${colorScheme}`}>
           <span className={`absolute top-1 left-1 h-6 w-6 rounded-full ${circleColor} flex text-center items-center justify-center transform transition-transform duration-300 ${selectedValue === options[1] ? "translate-x-8" : "translate-x-0"}`}>

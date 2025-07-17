@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, type InputHTMLAttributes } from "react";
 import { SWITCH_VARIANT } from "../Switch.constants";
 
-interface BooleanModeProps {
+type OmittedProps = "onChange" | "defaultValue"
+
+interface BooleanModeProps  extends Omit<InputHTMLAttributes<HTMLInputElement>, OmittedProps>{
   defaultValue?: boolean;
   onChange: (value: boolean) => void;
   variant?: SWITCH_VARIANT;
@@ -59,7 +61,7 @@ const circleVariantClassMap: Record<SWITCH_VARIANT, string> = {
   [SWITCH_VARIANT.STONE]: "bg-stone-300 peer-checked:bg-stone-600",
 };
 
-export default function BooleanMode({defaultValue, onChange, variant=SWITCH_VARIANT.SLATE, required, icons}: BooleanModeProps) {
+export default function BooleanMode({defaultValue, onChange, variant=SWITCH_VARIANT.SLATE, required, icons, ...props}: BooleanModeProps) {
   const [isChecked, setIsChecked] = useState<boolean>(defaultValue || false);
   const colorScheme = variantClassMap[variant];
   const circleColor = circleVariantClassMap[variant];
@@ -78,6 +80,7 @@ export default function BooleanMode({defaultValue, onChange, variant=SWITCH_VARI
         onChange={handleChange}
         defaultChecked={defaultValue}
         required={required}
+        {...props}
       />
       <div className={`rounded-full duration-300 w-16 h-8 ring-2 ${colorScheme}`}>
         <span className={`absolute top-1 left-1 h-6 w-6 rounded-full ${circleColor} flex text-center items-center justify-center transform transition-transform duration-300 bg-${variant}-${isChecked ? "600" : "300"} ${isChecked ? "translate-x-8" : "translate-x-0"}`}>
