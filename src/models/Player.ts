@@ -1,6 +1,10 @@
+import type { ROLE } from "../constant";
+
 export type Player = {
+  id?: string;
   prenom:string;
   nom:string;
-  pv:number;
-  role:string;
+  password?: string;
+  pv?:number;
+  role?:ROLE;
 }

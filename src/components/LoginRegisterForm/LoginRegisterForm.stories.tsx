@@ -12,5 +12,15 @@ export default meta;
 type Story = StoryObj<typeof LoginRegisterForm>;
 
 export const Basic: Story = {
-  render: () => <LoginRegisterForm/>
+  render: () =>
+    <div style={{backgroundColor:"#212121", padding:20}}>
+      <LoginRegisterForm connectPlayer={() => {}} registerPlayer={() => {}} isPlayersFull={false}/>
+    </div>
+};
+
+export const WithFullPlayers: Story = {
+  render: () =>
+    <div style={{backgroundColor:"#212121", padding:20}}>
+      <LoginRegisterForm connectPlayer={() => {}} registerPlayer={() => {}} isPlayersFull={true}/>
+    </div>
 };
