@@ -1,4 +1,4 @@
-import { useState, type InputHTMLAttributes } from "react";
+import { useEffect, useState, type InputHTMLAttributes } from "react";
 import { SWITCH_VARIANT } from "../Switch.constants";
 
 type OmittedProps = "onChange" | "defaultValue"
@@ -61,7 +61,7 @@ const circleVariantClassMap: Record<SWITCH_VARIANT, string> = {
   [SWITCH_VARIANT.STONE]: "bg-stone-300 peer-checked:bg-stone-600",
 };
 
-export default function BooleanMode({defaultValue, onChange, variant=SWITCH_VARIANT.SLATE, required, icons, ...props}: BooleanModeProps) {
+export default function BooleanMode({defaultValue, onChange, variant=SWITCH_VARIANT.SLATE, required, icons, value, ...props}: BooleanModeProps) {
   const [isChecked, setIsChecked] = useState<boolean>(defaultValue || false);
   const colorScheme = variantClassMap[variant];
   const circleColor = circleVariantClassMap[variant];
@@ -70,6 +70,11 @@ export default function BooleanMode({defaultValue, onChange, variant=SWITCH_VARI
     onChange(e.target.checked);
     setIsChecked(e.target.checked);
   }
+
+  useEffect(() => {
+    if (value && typeof value === "boolean" && setIsChecked !== value)
+      setIsChecked(value);
+  }, [value]);
 
   return (
     <label className="relative flex items-center cursor-pointer">

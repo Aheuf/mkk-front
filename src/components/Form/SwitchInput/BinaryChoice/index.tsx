@@ -1,4 +1,4 @@
-import { useState, type InputHTMLAttributes } from "react";
+import { useEffect, useState, type InputHTMLAttributes } from "react";
 import { SWITCH_VARIANT } from "../Switch.constants";
 
 type OmittedProps = "onChange" | "defaultValue";
@@ -63,7 +63,7 @@ const circleVariantClassMap: Record<SWITCH_VARIANT, string> = {
   [SWITCH_VARIANT.STONE]: "bg-stone-600"
 };
 
-export default function BinaryChoice({ options, defaultValue, onChange, variant=SWITCH_VARIANT.SLATE, required, icons, ...props }: BinaryChoiceProps) {
+export default function BinaryChoice({ options, defaultValue, onChange, variant=SWITCH_VARIANT.SLATE, required, icons, value, ...props }: BinaryChoiceProps) {
   const [selectedValue, setSelectedValue] = useState<string>( defaultValue || options[0] );
   const colorScheme = variantClassMap[variant];
   const circleColor = circleVariantClassMap[variant];
@@ -74,6 +74,11 @@ export default function BinaryChoice({ options, defaultValue, onChange, variant=
     setSelectedValue(value);
     onChange(value);
   }
+
+  useEffect(() => {
+    if (value && typeof value === "string" && selectedValue !== value)
+      setSelectedValue(value);
+  }, [value]);
 
   return (
     <>
@@ -97,7 +102,7 @@ export default function BinaryChoice({ options, defaultValue, onChange, variant=
                 {selectedValue === options[0] ? icons[0]: icons[1]}
               </span>
             }
-          </span> 
+          </span>
         </div>
       </label>
       <p className={`ml-3 ${selectedValue === options[1] ? "underline" : ""}`.trim()}>
@@ -106,6 +111,3 @@ export default function BinaryChoice({ options, defaultValue, onChange, variant=
     </>
   );
 }
-
-
-// text-white after:content-['r'] peer-checked:after:content-['a'] 

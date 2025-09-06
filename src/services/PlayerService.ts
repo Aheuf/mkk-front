@@ -1,30 +1,35 @@
 import axios from "axios";
-import type { Player } from "../models/Player";
-import { BASE_URL_SERVICE, ROLE } from "../constant";
+import type { LoginPlayerPayload, NewPlayerPayload, Player } from "../models/Player";
+import { BASE_URL_SERVICE, REGISTRATION_STATUS, ROLE } from "../constant";
 
 export class PlayerService {
 
-  async getPlayer(prenom:string, nom:string, mdp:string):Promise<Player> {
-    return (await axios.post(`${BASE_URL_SERVICE}/login`, {prenom, nom, mdp})).data;
+  async login(payload: LoginPlayerPayload): Promise<Player> {
+    return (await axios.post(`${BASE_URL_SERVICE}/login`, payload, { withCredentials: true })).data;
   }
 
-  async getPlayers(role:ROLE):Promise<Player[]> {
-    if(role === ROLE.ADMIN) {
-      return (await axios.get(`${BASE_URL_SERVICE}/players`)).data;
-    }
-    throw new Error("Unauthorized access: Only admins can retrieve player list.");
+  async logout(): Promise<void> {
+    return (await axios.post(`${BASE_URL_SERVICE}/logout`, null, { withCredentials: true }))
   }
 
-  async updatePlayer(playerToUpdate: Player):Promise<Player> {
-    return ( await axios.patch(`${BASE_URL_SERVICE}/players`, playerToUpdate)).data;
+  async getRegistrationStatus(): Promise<REGISTRATION_STATUS> {
+    return (await axios.get(`${BASE_URL_SERVICE}/registration_status`)).data;
   }
 
-  async getPlayerCount():Promise<number> {
-    return (await axios.get(`${BASE_URL_SERVICE}/players/count`)).data;
+  async getPlayers(): Promise<Player[]> {
+    return (await axios.get(`${BASE_URL_SERVICE}/players`, { withCredentials: true })).data;
   }
 
-  async createPlayer(player: Player):Promise<boolean> {
-    const createdPlayer: Player = (await axios.post(`${BASE_URL_SERVICE}/players`, player)).data;
-    return !!createdPlayer;
+  async getMyPlayer(): Promise<Player> {
+    return (await axios.get(`${BASE_URL_SERVICE}/players/me`, { withCredentials: true })).data;
+  }
+
+  async updatePlayer(playerToUpdate: Player): Promise<Player> {
+    return ( await axios.patch(`${BASE_URL_SERVICE}/players/${playerToUpdate.username}`, playerToUpdate, { withCredentials: true })).data;
+  }
+
+  async createPlayer(payload: NewPlayerPayload): Promise<ROLE> {
+    const role: ROLE = (await axios.post(`${BASE_URL_SERVICE}/register`, payload)).data;
+    return role;
   }
 }

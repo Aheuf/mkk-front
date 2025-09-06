@@ -1,48 +1,65 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Player } from "../../models/Player";
-import { useLocation,  } from "react-router";
+import { useLocation, useNavigate, } from "react-router";
 import { PlayerService } from "../../services/PlayerService";
 import { WEB_SOCKET_URL } from "../../constant";
+import LogoutButton from "../../components/LogoutButton";
 
-export default function PlayerPanel() {
-  const connectedPlayer = useLocation().state;
-  const [player, setPlayer] = useState<Player | undefined>(connectedPlayer);
-  const [textColor, setTextColor] = useState<string>("green");
-  const service = new PlayerService();
-  const socket = useMemo(() => new WebSocket(WEB_SOCKET_URL), []);
+interface PlayerPanelProps {
+  playerService: PlayerService
+}
 
+export default function PlayerPanel({ playerService }: PlayerPanelProps) {
+  const navigate = useNavigate();
+  const [player, setPlayer] = useState<Player | null>(useLocation().state);
+  const websocket = useMemo(() => new WebSocket(WEB_SOCKET_URL), []);
 
-  const handleClick = (operator:string) => {
-    if(player){
-      const updatedPlayer = player;
+  useEffect(() => {
+    if (!player) {
+      playerService.getMyPlayer().then(setPlayer);
+    }
+  }, []);
 
-      if(operator === "+" && updatedPlayer.pv < 3){
+  const handleClick = (operator: string) => {
+    if (player) {
+      const updatedPlayer = { ...player };
+
+      if (operator === "+" && updatedPlayer.pv < 3) {
         updatedPlayer.pv += 1;
-      } else if(operator === "-" && updatedPlayer.pv > 0) {
+      } else if (operator === "-" && updatedPlayer.pv > 0) {
         updatedPlayer.pv -= 1;
       }
 
-      service.updatePlayer(updatedPlayer);
+      playerService.updatePlayer(updatedPlayer);
       setPlayer(updatedPlayer);
-      socket.send("");
-
-      switch(player?.pv){
-        case 3: setTextColor("green"); break;
-        case 2: setTextColor("orange"); break;
-        case 1: setTextColor("red"); break;
-        default: setTextColor("slate"); break;
-      }
+      websocket.send("");
     }
   }
 
-  return (
+  const handleLogout = async () => {
+    await playerService.logout();
+    navigate("/");
+  }
+
+  const getHeartColor = () => {
+    switch (player?.pv) {
+      case 3: return "green";
+      case 2: return "orange";
+      case 1: return "red";
+      default: return "slate";
+    }
+  }
+
+  return (<>
+    <LogoutButton className="absolute top-4 right-4" handleLogout={handleLogout} />
     <div className="grid grid-cols-1 justify-items-center items-center h-full marioFont text-white bg-white/50">
       <h1 className="text-5xl">{player?.prenom}</h1>
-      <p className={`text-8xl text-${textColor}-500`}>{player?.pv}</p>
+      <p className={`text-8xl text-${getHeartColor()}-500`}>{player?.pv}</p>
       <div className="h-full w-full">
         <button className="text-8xl text-red-500 bg-white h-full w-1/2 active:scale-95 border" onClick={() => handleClick("-")}>-</button>
         <button className="text-8xl text-green-500 bg-white h-full w-1/2 active:scale-95 border" onClick={() => handleClick("+")}>+</button>
       </div>
     </div>
+  </>
   )
 }
