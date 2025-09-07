@@ -87,7 +87,6 @@ export default function BinaryChoice({ options, defaultValue, onChange, variant=
       </p>
       <label className="relative flex items-center cursor-pointer">
         <input
-          id="SwitchInput"
           type="checkbox"
           className="sr-only peer"
           onChange={handleChange}

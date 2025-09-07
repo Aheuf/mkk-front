@@ -12,8 +12,16 @@ body, html, #root {
   background-size: cover;
 }
 
-h1, .marioFont {
+h1, .mario-font {
   font-family: "marioFont";
   letter-spacing: 0.2rem;
   -webkit-text-stroke: 2px black;
+}
+
+.player-button {
+  transition: opacity 300ms;
+}
+
+.player-row:hover .player-button {
+  opacity: 1;
 }

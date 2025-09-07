@@ -79,7 +79,6 @@ export default function BooleanMode({defaultValue, onChange, variant=SWITCH_VARI
   return (
     <label className="relative flex items-center cursor-pointer">
       <input
-        id="SwitchInput"
         type="checkbox"
         className="sr-only peer"
         onChange={handleChange}

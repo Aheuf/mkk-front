@@ -53,7 +53,7 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
 
   return (<>
     <LogoutButton className="absolute top-4 right-4" handleLogout={handleLogout} />
-    <div className="grid grid-cols-1 justify-items-center items-center h-full marioFont text-white bg-white/50">
+    <div className="grid grid-cols-1 justify-items-center items-center h-full mario-font text-white bg-white/50">
       <h1 className="text-5xl">{player?.prenom}</h1>
       <p className={`text-8xl text-${getHeartColor()}-500`}>{player?.pv}</p>
       <div className="h-full w-full">

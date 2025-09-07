@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logo from "../../../public/assets/images/logo-mk8.png";
+import logo from "../../assets/images/logo-mk8.png";
 import LoginRegisterForm from "../../components/LoginRegisterForm";
 import type { PlayerService } from "../../services/PlayerService";
 import { REGISTRATION_STATUS, ROLE, Toast } from "../../constant";
