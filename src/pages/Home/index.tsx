@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import logo from "../../../public/assets/images/logo-mk8.png";
 import LoginRegisterForm from "../../components/LoginRegisterForm";
 import type { PlayerService } from "../../services/PlayerService";
-import { REGISTRATION_STATUS, ROLE } from "../../constant";
+import { REGISTRATION_STATUS, ROLE, Toast } from "../../constant";
 import type { LoginPlayerPayload, NewPlayerPayload } from "../../models/Player";
 import { useNavigate } from "react-router";
 import { AxiosError } from "axios";
@@ -25,33 +25,33 @@ export default function Home({playerService}: HomeProps) {
     })
     .catch(e => {
       if (e instanceof AxiosError && e.response?.data) {
-        alert(e.response.data);
+        Toast.fire({icon: "error", title: "Erreur", text: e.response.data});
       }
     });
   }
 
   const handleRegister = (payload: NewPlayerPayload): Promise<boolean> => {
     if (registrationStatus === REGISTRATION_STATUS.FULL) {
-      alert("La liste des joueurs est complète. Veuillez réessayer l'année prochaine.");
+      Toast.fire({icon: "error", title: "Liste complète", html: "La liste des joueurs est complète.<br>Veuillez réessayer l'année prochaine."});
       return Promise.resolve(false);
     }
 
     return playerService.createPlayer(payload).then(role => {
       switch (role) {
         case ROLE.PLAYER:
-          alert("Joueur enregistré avec succès !");
+          Toast.fire({icon: "success", title: "Joueur enregistré", width: "22em"});
           break;
         case ROLE.QUEUED:
-          alert("Liste complète, joueur enregistré pour l'année prochaine.");
+          Toast.fire({icon: "info", title: "Liste complète", text: "Joueur enregistré pour l'année prochaine."});
           break;
         default:
-          alert("Échec de l'enregistrement du joueur. Veuillez réessayer.");
+          Toast.fire({icon: "error", title: "Échec de l'enregistrement du joueur", text: "Veuillez réessayer."});
           break;
       }
       return true;
     }).catch(e => {
       if (e instanceof AxiosError && e.response?.data) {
-        alert(e.response.data);
+        Toast.fire({icon: "error", title: "Erreur", text: e.response.data});
       }
       return false;
     });
