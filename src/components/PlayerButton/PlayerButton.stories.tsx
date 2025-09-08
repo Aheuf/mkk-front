@@ -21,8 +21,8 @@ export const Minus: Story = {
 
 export const Sizes: Story = {
   render: () => <>
-    <PlayerButton variant={PLAYER_BUTTON_VARIANT.PLUS} size={PLAYER_BUTTON_SIZE.XL} onClick={() => {}} />
-    <PlayerButton variant={PLAYER_BUTTON_VARIANT.PLUS} size={PLAYER_BUTTON_SIZE.MD} onClick={() => {}} />
-    <PlayerButton variant={PLAYER_BUTTON_VARIANT.PLUS} size={PLAYER_BUTTON_SIZE.SM} onClick={() => {}} />
+    <PlayerButton variant={PLAYER_BUTTON_VARIANT.MINUS} size={PLAYER_BUTTON_SIZE.XL} onClick={() => {}} />
+    <PlayerButton variant={PLAYER_BUTTON_VARIANT.MINUS} size={PLAYER_BUTTON_SIZE.MD} onClick={() => {}} />
+    <PlayerButton variant={PLAYER_BUTTON_VARIANT.MINUS} size={PLAYER_BUTTON_SIZE.SM} onClick={() => {}} />
   </>
 };

@@ -6,6 +6,9 @@
 
 body, html, #root {
   height: 100%;
+}
+
+html {
   background-image: url("./assets/images/background.jpg");
   background-position: center;
   background-repeat: no-repeat;
@@ -18,10 +21,7 @@ h1, .mario-font {
   -webkit-text-stroke: 2px black;
 }
 
-.player-button {
-  transition: opacity 300ms;
-}
-
-.player-row:hover .player-button {
+.player-row:hover .player-button,
+.player-row:hover .delete-button {
   opacity: 1;
 }

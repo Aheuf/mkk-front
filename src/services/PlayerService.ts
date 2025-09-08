@@ -32,4 +32,8 @@ export class PlayerService {
     const role: ROLE = (await axios.post(`${BASE_URL_SERVICE}/register`, payload)).data;
     return role;
   }
+
+  async deletePlayer(player: Player): Promise<void> {
+    return axios.delete(`${BASE_URL_SERVICE}/players/${player.username}`, { withCredentials: true });
+  }
 }
