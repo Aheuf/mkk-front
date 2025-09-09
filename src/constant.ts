@@ -4,5 +4,11 @@ export const BASE_URL_SERVICE =  window.location.href.includes("localhost") ? "h
 export enum ROLE {
   ADMIN = "ADMIN",
   PLAYER = "PLAYER",
+  QUEUED = "QUEUED",
   UNKNOWN = "UNKNOWN"
 };
+
+export enum REGISTRATION_STATUS {
+  OPEN = "OPEN",
+  FULL = "FULL"
+}
