@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { Player } from "../../models/Player";
 import { useLocation, useNavigate, } from "react-router";
 import { PlayerService } from "../../services/PlayerService";
-import { WEB_SOCKET_URL } from "../../constant";
+import { Toast, WEB_SOCKET_URL } from "../../constant";
 import LogoutButton from "../../components/LogoutButton";
 
 interface PlayerPanelProps {
@@ -38,6 +38,7 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
 
   const handleLogout = async () => {
     await playerService.logout();
+    Toast.fire({icon: "success", title: "Déconnecté", width: "22em"});
     navigate("/");
   }
 

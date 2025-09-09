@@ -3,7 +3,7 @@ import type { Player } from "../../models/Player";
 import { PlayerService } from "../../services/PlayerService";
 import heartFull from "../../../public/assets/images/heartFull.png";
 import heartEmpty from "../../../public/assets/images/heartEmpty.png";
-import { ROLE, WEB_SOCKET_URL } from "../../constant";
+import { ROLE, Toast, WEB_SOCKET_URL } from "../../constant";
 import LogoutButton from "../../components/LogoutButton";
 import { useNavigate } from "react-router";
 
@@ -41,6 +41,7 @@ export default function AdminPanel({ playerService }: AdminPanelProps) {
 
   const handleLogout = async () => {
     await playerService.logout();
+    Toast.fire({icon: "success", title: "Déconnecté", width: "22em"});
     navigate("/");
   }
 
