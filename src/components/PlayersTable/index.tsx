@@ -23,7 +23,7 @@ export default function PlayersTable({ players, onClickPlayerHp, onClickPlayerDe
             <tbody className="text-center">
                 {players.map(player =>
                     <tr key={player.username} className={`player-row border-2 border-black${player.pv === 0 && " text-slate-500 bg-slate-500"}`}>
-                        <td>{`${player.prenom} ${player.nom.charAt(0)}.`}</td>
+                        <td>{player.username}</td>
                         <td className="relative flex justify-center items-center">
                             <PlayerButton className="opacity-0" size={PLAYER_BUTTON_SIZE.SM} variant={PLAYER_BUTTON_VARIANT.MINUS} onClick={() => onClickPlayerHp(player, player.pv - 1)} />
                             {[1, 2, 3].map(pv => (

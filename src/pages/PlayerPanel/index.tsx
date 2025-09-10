@@ -18,7 +18,7 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
     if (!player) {
       playerService.getMyPlayer().then(setPlayer);
     }
-  }, []);
+  }, [player,playerService]);
 
   const handleClick = (operator: string) => {
     if (player) {
@@ -54,7 +54,7 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
   return (<>
     <LogoutButton className="absolute top-4 right-4" handleLogout={handleLogout} />
     <div className="grid grid-cols-1 justify-items-center items-center h-full mario-font text-white bg-white/50">
-      <h1 className="text-5xl">{player?.prenom}</h1>
+      <h1 className="text-5xl">{player?.username}</h1>
       <p className={`text-8xl text-${getHeartColor()}-500`}>{player?.pv}</p>
       <div className="h-full w-full">
         <button className="text-8xl text-red-500 bg-white h-full w-1/2 active:scale-95 border" onClick={() => handleClick("-")}>-</button>
