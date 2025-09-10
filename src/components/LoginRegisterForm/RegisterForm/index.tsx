@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { REGISTRATION_STATUS } from "../../../constant";
 import type { NewPlayerPayload } from "../../../models/Player";
+import Swal from "sweetalert2";
 
 interface RegisterFormProps {
   registrationStatus: REGISTRATION_STATUS;
@@ -11,6 +12,18 @@ export default function RegisterForm({ registrationStatus, onSubmit }: RegisterF
   const [motDePasse, setMotDePasse] = useState<string>("");
   const [motDePasseConfirme, setMotDePasseConfirme] = useState<string>("");
   const [erreurMdp, setErreurMdp] = useState<string>("");
+
+  useEffect(() => {
+    if (registrationStatus === REGISTRATION_STATUS.FULL) {
+        Swal.fire({
+        title: `La liste des joueurs est complète pour ${new Date().getFullYear()}. !`,
+        text: `Si tu t'inscris maintenant, tu seras ajouté à la liste d'attente pour ${new Date().getFullYear() + 1}.`,
+        icon: "info",
+        confirmButtonText: "ok",
+        position: "center"
+      });
+    }
+  }, [registrationStatus]);
 
   const validate = (mdp: string, mdpConfirme: string) => {
     if (mdpConfirme && mdp !== mdpConfirme) {
@@ -33,9 +46,7 @@ export default function RegisterForm({ registrationStatus, onSubmit }: RegisterF
       onSubmit({nom, prenom, username, password});
   };
 
-  return registrationStatus === REGISTRATION_STATUS.FULL ?
-    <p>liste des joueurs complet ! revenez l'année prochaine</p>
-    :
+  return (
     <form onSubmit={handleSubmit} className="justify-items-center w-full">
       <div>
         <label htmlFor="nom" className="block text-gray-800 font-semibold text-sm">Nom</label>
@@ -80,4 +91,4 @@ export default function RegisterForm({ registrationStatus, onSubmit }: RegisterF
         S'inscrire
       </button>
   </form>
-}
+)}

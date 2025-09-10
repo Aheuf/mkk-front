@@ -31,11 +31,6 @@ export default function Home({playerService}: HomeProps) {
   }
 
   const handleRegister = (payload: NewPlayerPayload): Promise<boolean> => {
-    if (registrationStatus === REGISTRATION_STATUS.FULL) {
-      Toast.fire({icon: "error", title: "Liste complète", html: "La liste des joueurs est complète.<br>Veuillez réessayer l'année prochaine."});
-      return Promise.resolve(false);
-    }
-
     return playerService.createPlayer(payload).then(role => {
       switch (role) {
         case ROLE.PLAYER:
