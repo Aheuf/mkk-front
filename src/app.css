@@ -6,14 +6,22 @@
 
 body, html, #root {
   height: 100%;
+}
+
+html {
   background-image: url("./assets/images/background.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-h1, .marioFont {
+h1, .mario-font {
   font-family: "marioFont";
   letter-spacing: 0.2rem;
   -webkit-text-stroke: 2px black;
+}
+
+.player-row:hover .player-button,
+.player-row:hover .delete-button {
+  opacity: 1;
 }

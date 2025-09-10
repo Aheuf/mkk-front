@@ -1,65 +1,80 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
 import type { Player } from "../../models/Player";
 import { PlayerService } from "../../services/PlayerService";
-import heartFull from "../../../public/assets/images/heartFull.png";
-import heartEmpty from "../../../public/assets/images/heartEmpty.png";
-import { WEB_SOCKET_URL } from "../../constant";
+import { ROLE, Toast, WEB_SOCKET_URL } from "../../constant";
+import LogoutButton from "../../components/LogoutButton";
+import { useNavigate } from "react-router";
+import PlayersTable from "../../components/PlayersTable";
+import Swal from "sweetalert2";
 
-export default function AdminPanel() {
-  const [playersList, setPlayerList] = useState<Player[]>([]);
-  const players = useLocation().state;
-  const [isrequestQueued, setIsRequestQueued] = useState<boolean>(false);
+interface AdminPanelProps {
+  playerService: PlayerService
+}
+
+export default function AdminPanel({ playerService }: AdminPanelProps) {
   const navigate = useNavigate();
-  const playerService = useMemo(() => new PlayerService(), []);
-
-
-  useEffect(() => {
-    setPlayerList(players.filter( (player:Player) => player.role === "PLAYER").sort((a: Player,b: Player) => b.pv - a.pv) || []);
-  }, [playersList.length, navigate, players]);
+  const [playersList, setPlayerList] = useState<Player[]>([]);
+  const [isrequestQueued, setIsRequestQueued] = useState<boolean>(false);
+  const websocket = useMemo(() => new WebSocket(WEB_SOCKET_URL), []);
 
   useEffect(() => {
-    const socket = new WebSocket(WEB_SOCKET_URL);
+    playerService.getPlayers().then(setPlayerList);
+  }, []);
 
-    socket.onmessage = () => {
-      try {
-        console.info("demande de mise à jour reçu");
-        if(!isrequestQueued){
-          setTimeout(() => {
-              playerService.getPlayers().then(p => {
-                setPlayerList(p.filter( (player:Player) => player.role === "PLAYER").sort((a: Player,b: Player) => b.pv - a.pv))
-              });
-            setIsRequestQueued(false);
-          }, 5000)
-        }
-      } catch (err) {
-        console.error("Message WebSocket invalide :", err);
+  websocket.onmessage = () => {
+    try {
+      console.info("demande de mise à jour reçu");
+      if (!isrequestQueued) {
+        setTimeout(() => {
+          playerService.getPlayers().then(p => {
+            setPlayerList(p.filter((player: Player) => player.role === "PLAYER").sort((a: Player, b: Player) => b.pv - a.pv))
+          });
+          setIsRequestQueued(false);
+        }, 5000)
       }
-    };
-  }, [])
+    } catch (err) {
+      console.error("Message WebSocket invalide :", err);
+    }
+  };
 
-  return (
+  const handleOnClickPlayerHp = async (player: Player, newPv: number) => {
+    const updatedPlayer = { ...player, pv: Math.max(0, Math.min(3, newPv)) };
+    await playerService.updatePlayer(updatedPlayer);
+    setPlayerList(await playerService.getPlayers());
+  };
+
+  const handleOnClickPlayerDelete = async (player: Player) => {
+    Swal.fire({
+      title: "Est-ce votre ultime bafouille ?",
+      text: `Veux-tu supprimer le joueur "${player.username}" ?`,
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: "Supprimer",
+      denyButtonText: "Annuler",
+      reverseButtons: true
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await playerService.deletePlayer(player);
+        setPlayerList(await playerService.getPlayers());
+      }
+    });
+  };
+
+  const handleLogout = async () => {
+    await playerService.logout();
+    Toast.fire({ icon: "success", title: "Déconnecté", width: "22em" });
+    navigate("/");
+  }
+
+  return (<>
+    <LogoutButton className="absolute top-4 right-4" handleLogout={handleLogout} />
     <div className="grid grid-cols-1 justify-items-center items-center text-white p-5">
-      <h1 className="text-5xl">Mario Kart Kup 2025</h1>
-      <table className="table-auto bg-white/50 marioFont text-3xl w-2/3 rounded">
-        <thead>
-          <tr>
-            <th>joueur</th>
-            <th>vie</th>
-          </tr>
-        </thead>
-        <tbody className="text-center">
-          {playersList.map((player, index) =>
-            <tr key={index} className={`border-2 border-black ${ player.pv === 0 && "text-slate-500 bg-slate-500"}`}>
-              <td>{`${player.prenom} ${player.nom.charAt(0)}.`}</td>
-              <td className={"flex justify-center"}>
-                {Array.from(Array(player.pv), () => <img src={heartFull} key={`${player.nom}-heartFull-${Math.random() * 1000}`} className="size-14"/>)}
-                {Array.from(Array(3 - player.pv), () => <img src={heartEmpty} key={`${player.nom}-heartEmpty-${Math.random() * 1000}`} className="size-14"/>)}
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <h1 className="text-5xl text-center my-10">Mario Kart Kup 2025</h1>
+      <PlayersTable
+        players={playersList.filter(player => player.role === ROLE.PLAYER).sort((a: Player, b: Player) => b.pv - a.pv)}
+        onClickPlayerHp={handleOnClickPlayerHp}
+        onClickPlayerDelete={handleOnClickPlayerDelete} />
     </div>
+  </>
   )
 }
