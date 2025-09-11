@@ -17,13 +17,13 @@ export default function AdminPanel({ playerService }: AdminPanelProps) {
   const [playersList, setPlayerList] = useState<Player[]>([]);
   const websocket = useMemo(() => new WebSocket(WEB_SOCKET_URL), []);
 
-  const debounsedPlayersRefresh = useDebounce(() => {
+  const debouncedPlayersRefresh = useDebounce(() => {
     playerService.getPlayers().then(setPlayerList);
   }, 2000);
 
   useEffect(() => {
     websocket.onmessage = () => {
-      debounsedPlayersRefresh();
+      debouncedPlayersRefresh();
     };
   }, [debouncedPlayersRefresh, websocket]);
 
