@@ -1,3 +1,5 @@
+![Build Status](https://github.com/Aheuf/mkk-front/actions/workflows/ci.yml/badge.svg)
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
