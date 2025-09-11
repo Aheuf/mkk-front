@@ -6,36 +6,26 @@ import LogoutButton from "../../components/LogoutButton";
 import { useNavigate } from "react-router";
 import PlayersTable from "../../components/PlayersTable";
 import Swal from "sweetalert2";
+import { useDebounce } from "../../hooks/useDebounce";
 
 interface AdminPanelProps {
-  playerService: PlayerService
+  playerService: PlayerService;
 }
 
 export default function AdminPanel({ playerService }: AdminPanelProps) {
   const navigate = useNavigate();
   const [playersList, setPlayerList] = useState<Player[]>([]);
-  const [isrequestQueued, setIsRequestQueued] = useState<boolean>(false);
   const websocket = useMemo(() => new WebSocket(WEB_SOCKET_URL), []);
 
-  useEffect(() => {
+  const debounsedPlayersRefresh = useDebounce(() => {
     playerService.getPlayers().then(setPlayerList);
-  }, []);
+  }, 2000);
 
-  websocket.onmessage = () => {
-    try {
-      console.info("demande de mise à jour reçu");
-      if (!isrequestQueued) {
-        setTimeout(() => {
-          playerService.getPlayers().then(p => {
-            setPlayerList(p.filter((player: Player) => player.role === "PLAYER").sort((a: Player, b: Player) => b.pv - a.pv))
-          });
-          setIsRequestQueued(false);
-        }, 5000)
-      }
-    } catch (err) {
-      console.error("Message WebSocket invalide :", err);
-    }
-  };
+  useEffect(() => {
+    websocket.onmessage = () => {
+      debounsedPlayersRefresh();
+    };
+  }, [debounsedPlayersRefresh, websocket]);
 
   const handleOnClickPlayerHp = async (player: Player, newPv: number) => {
     const updatedPlayer = { ...player, pv: Math.max(0, Math.min(3, newPv)) };
@@ -51,7 +41,7 @@ export default function AdminPanel({ playerService }: AdminPanelProps) {
       showDenyButton: true,
       confirmButtonText: "Supprimer",
       denyButtonText: "Annuler",
-      reverseButtons: true
+      reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
         await playerService.deletePlayer(player);
@@ -64,17 +54,24 @@ export default function AdminPanel({ playerService }: AdminPanelProps) {
     await playerService.logout();
     Toast.fire({ icon: "success", title: "Déconnecté", width: "22em" });
     navigate("/");
-  }
+  };
 
-  return (<>
-    <LogoutButton className="absolute top-4 right-4" handleLogout={handleLogout} />
-    <div className="grid grid-cols-1 justify-items-center items-center text-white p-5">
-      <h1 className="text-5xl text-center my-10">Mario Kart Kup 2025</h1>
-      <PlayersTable
-        players={playersList.filter(player => player.role === ROLE.PLAYER).sort((a: Player, b: Player) => b.pv - a.pv)}
-        onClickPlayerHp={handleOnClickPlayerHp}
-        onClickPlayerDelete={handleOnClickPlayerDelete} />
-    </div>
-  </>
-  )
+  return (
+    <>
+      <LogoutButton
+        className="absolute top-4 right-4"
+        handleLogout={handleLogout}
+      />
+      <div className="grid grid-cols-1 justify-items-center items-center text-white p-5">
+        <h1 className="text-5xl text-center my-10">Mario Kart Kup 2025</h1>
+        <PlayersTable
+          players={playersList
+            .filter((player) => player.role === ROLE.PLAYER)
+            .sort((a: Player, b: Player) => b.pv - a.pv)}
+          onClickPlayerHp={handleOnClickPlayerHp}
+          onClickPlayerDelete={handleOnClickPlayerDelete}
+        />
+      </div>
+    </>
+  );
 }
