@@ -25,7 +25,7 @@ export default function AdminPanel({ playerService }: AdminPanelProps) {
     websocket.onmessage = () => {
       debounsedPlayersRefresh();
     };
-  }, [debounsedPlayersRefresh, websocket]);
+  }, [debouncedPlayersRefresh, websocket]);
 
   const handleOnClickPlayerHp = async (player: Player, newPv: number) => {
     const updatedPlayer = { ...player, pv: Math.max(0, Math.min(3, newPv)) };
