@@ -30,7 +30,7 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
         updatedPlayer.pv -= 1;
       }
 
-      playerService.updatePlayer(updatedPlayer).then(() => websocket.send(`${player.username} a ${operator}1 PV`));
+      playerService.updatePlayer(updatedPlayer).then(() => websocket.send(`${player.username} a ${player.pv} PV (${operator}1)`));
       setPlayer(updatedPlayer);
     }
   }
