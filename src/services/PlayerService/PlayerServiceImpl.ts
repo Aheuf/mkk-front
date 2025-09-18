@@ -1,8 +1,9 @@
 import axios from "axios";
-import type { LoginPlayerPayload, NewPlayerPayload, Player } from "../models/Player";
-import { BASE_URL_SERVICE, REGISTRATION_STATUS, ROLE } from "../constant";
+import type { LoginPlayerPayload, NewPlayerPayload, Player } from "../../models/Player";
+import { BASE_URL_SERVICE, REGISTRATION_STATUS, ROLE } from "../../constant";
+import type { PlayerService } from "./PlayerService";
 
-export class PlayerService {
+export class PlayerServiceImpl implements PlayerService{
 
   async login(payload: LoginPlayerPayload): Promise<Player> {
     return (await axios.post(`${BASE_URL_SERVICE}/login`, payload, { withCredentials: true })).data;
@@ -29,11 +30,10 @@ export class PlayerService {
   }
 
   async createPlayer(payload: NewPlayerPayload): Promise<ROLE> {
-    const role: ROLE = (await axios.post(`${BASE_URL_SERVICE}/register`, payload)).data;
-    return role;
+    return (await axios.post(`${BASE_URL_SERVICE}/register`, payload)).data;
   }
 
   async deletePlayer(player: Player): Promise<void> {
-    return axios.delete(`${BASE_URL_SERVICE}/players/${player.username}`, { withCredentials: true });
+    return await axios.delete(`${BASE_URL_SERVICE}/players/${player.username}`, { withCredentials: true });
   }
 }

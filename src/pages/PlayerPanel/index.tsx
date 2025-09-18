@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Player } from "../../models/Player";
 import { useLocation, useNavigate, } from "react-router";
-import { PlayerService } from "../../services/PlayerService";
+import { PlayerServiceImpl } from "../../services/PlayerService/PlayerServiceImpl";
 import { Toast, WEB_SOCKET_URL } from "../../constant";
 import LogoutButton from "../../components/LogoutButton";
+import PlayerButton, { PLAYER_BUTTON_SIZE, PLAYER_BUTTON_VARIANT } from "../../components/PlayerButton";
 
 interface PlayerPanelProps {
-  playerService: PlayerService
+  playerService: PlayerServiceImpl
 }
 
 export default function PlayerPanel({ playerService }: PlayerPanelProps) {
@@ -20,13 +21,13 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
     }
   }, [player,playerService]);
 
-  const handleClick = (operator: string) => {
+  const handleClick = (operator: PLAYER_BUTTON_VARIANT) => {
     if (player) {
       const updatedPlayer = { ...player };
 
-      if (operator === "+" && updatedPlayer.pv < 3) {
+      if (operator === PLAYER_BUTTON_VARIANT.PLUS && updatedPlayer.pv < 3) {
         updatedPlayer.pv += 1;
-      } else if (operator === "-" && updatedPlayer.pv > 0) {
+      } else if (updatedPlayer.pv > 0) {
         updatedPlayer.pv -= 1;
       }
 
@@ -41,7 +42,7 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
     navigate("/");
   }
 
-  const getHeartColor = () => {
+  const getLifeColor = () => {
     switch (player?.pv) {
       case 3: return "green";
       case 2: return "orange";
@@ -50,16 +51,19 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
     }
   }
 
-  return (<>
-    <LogoutButton className="absolute top-4 right-4" handleLogout={handleLogout} />
-    <div className="grid grid-cols-1 justify-items-center items-center h-full mario-font text-white bg-white/50">
+  return (
+  <div className="grid">
+    <div className="justify-content-end justify-self-end mb-5">
+      <LogoutButton handleLogout={handleLogout} />
+    </div>
+    <div className="justify-items-center mario-font text-white bg-white/50 py-5">
       <h1 className="text-5xl">{player?.username}</h1>
-      <p className={`text-8xl text-${getHeartColor()}-500`}>{player?.pv}</p>
-      <div className="h-full w-full">
-        <button className="text-8xl text-red-500 bg-white h-full w-1/2 active:scale-95 border" onClick={() => handleClick("-")}>-</button>
-        <button className="text-8xl text-green-500 bg-white h-full w-1/2 active:scale-95 border" onClick={() => handleClick("+")}>+</button>
+      <p className={`text-8xl text-${getLifeColor()}-500`}>{player?.pv}</p>
+      <div className="flex justify-center gap-10">
+        <PlayerButton onClick={handleClick} variant={PLAYER_BUTTON_VARIANT.MINUS} size={PLAYER_BUTTON_SIZE.XL}/>
+        <PlayerButton onClick={handleClick} variant={PLAYER_BUTTON_VARIANT.PLUS} size={PLAYER_BUTTON_SIZE.XL}/>
       </div>
     </div>
-  </>
+  </div>
   )
 }

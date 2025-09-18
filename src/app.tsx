@@ -3,9 +3,9 @@ import './app.css'
 import Home from './pages/Home/index.tsx';
 import PlayerPanel from './pages/PlayerPanel/index.tsx';
 import AdminPanel from './pages/AdminPanel/index.tsx';
-import { PlayerService } from './services/PlayerService.ts';
+import { PlayerServiceImpl } from './services/PlayerService/PlayerServiceImpl.ts';
 
-const playerService = new PlayerService();
+const playerService = new PlayerServiceImpl();
 
 export default function App() {
   return (

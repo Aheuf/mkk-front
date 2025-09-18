@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Player } from "../../models/Player";
-import { PlayerService } from "../../services/PlayerService";
+import { PlayerServiceImpl } from "../../services/PlayerService/PlayerServiceImpl";
 import { ROLE, Toast, WEB_SOCKET_URL } from "../../constant";
 import LogoutButton from "../../components/LogoutButton";
 import { useNavigate } from "react-router";
@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { useDebounce } from "../../hooks/useDebounce";
 
 interface AdminPanelProps {
-  playerService: PlayerService;
+  playerService: PlayerServiceImpl;
 }
 
 export default function AdminPanel({ playerService }: AdminPanelProps) {
