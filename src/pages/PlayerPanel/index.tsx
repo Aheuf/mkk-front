@@ -52,14 +52,14 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
   }
 
   return (
-  <div className="grid">
-    <div className="justify-content-end justify-self-end mb-5">
+  <div className="grid grid-cols-1 grid-rows-12 p-5 h-screen">
+    <div className="row-span-1 justify-self-end self-start">
       <LogoutButton handleLogout={handleLogout} />
     </div>
-    <div className="justify-items-center mario-font text-white bg-white/50 py-5">
-      <h1 className="text-5xl">{player?.username}</h1>
-      <p className={`text-8xl text-${getLifeColor()}-500`}>{player?.pv}</p>
-      <div className="flex justify-center gap-10">
+    <div className="row-span-11 grid grid-cols-1 grid-rows-12 mario-font text-white bg-white/50 py-5">
+      <h1 className="text-5xl row-span-1 text-center">{player?.username}</h1>
+      <p className={`flex items-center justify-center text-8xl text-${getLifeColor()}-500 row-span-9`}>{player?.pv}</p>
+      <div className="flex justify-center gap-10 row-span-2">
         <PlayerButton onClick={handleClick} variant={PLAYER_BUTTON_VARIANT.MINUS} size={PLAYER_BUTTON_SIZE.XL}/>
         <PlayerButton onClick={handleClick} variant={PLAYER_BUTTON_VARIANT.PLUS} size={PLAYER_BUTTON_SIZE.XL}/>
       </div>
