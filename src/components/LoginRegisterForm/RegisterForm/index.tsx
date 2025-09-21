@@ -18,6 +18,7 @@ export default function RegisterForm({ registrationStatus, onSubmit }: RegisterF
         Swal.fire({
         title: `La liste des joueurs est complète pour ${new Date().getFullYear()}. !`,
         text: `Si tu t'inscris maintenant, tu seras ajouté à la liste d'attente pour ${new Date().getFullYear() + 1}.`,
+        heightAuto:false,
         icon: "info",
         confirmButtonText: "ok",
         position: "center"
