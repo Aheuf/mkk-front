@@ -14,7 +14,7 @@ interface PlayerButtonProps {
   variant: PLAYER_BUTTON_VARIANT;
   size?: PLAYER_BUTTON_SIZE;
   className?: string;
-  onClick(): void;
+  onClick(variant : PLAYER_BUTTON_VARIANT): void;
 }
 
 export default function PlayerButton({ variant, size, className, onClick }: PlayerButtonProps) {
@@ -38,9 +38,11 @@ export default function PlayerButton({ variant, size, className, onClick }: Play
   }
 
   return (
-    <button className={`transition-opacity duration-[300ms] player-button rounded-full ${buttonStyle} active:scale-95 border leading-1 ${buttonSizeStyle} ${className ?? ""}`} onClick={onClick}>
+    <button className={`transition-opacity duration-[300ms] player-button rounded-full ${buttonStyle} active:scale-95 border leading-1 ${buttonSizeStyle} ${className ?? ""}`}
+            onClick={() => onClick(variant)}>
       <span className={`mario-font inline-block transform-[translateX(0.06em)]`}>
-        {variant}</span>
+        {variant}
+      </span>
     </button>
   )
 }

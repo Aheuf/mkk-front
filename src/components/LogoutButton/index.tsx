@@ -4,7 +4,7 @@ interface LogoutButtonProps {
 }
 
 export default function LogoutButton({ handleLogout, className }: LogoutButtonProps) {
-    var css = ["text-white bg-red-500 px-4 py-2 rounded hover:bg-red-600"];
+    const css = ["text-white bg-red-500 px-4 py-2 rounded active:bg-red-600"];
     if (className) css.push(className);
 
     return (

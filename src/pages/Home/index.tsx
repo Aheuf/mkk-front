@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import logo from "../../assets/images/logo-mk8.png";
 import LoginRegisterForm from "../../components/LoginRegisterForm";
-import type { PlayerService } from "../../services/PlayerService";
+import type { PlayerServiceImpl } from "../../services/PlayerService/PlayerServiceImpl";
 import { REGISTRATION_STATUS, ROLE, Toast } from "../../constant";
 import type { LoginPlayerPayload, NewPlayerPayload } from "../../models/Player";
 import { useNavigate } from "react-router";
 import { AxiosError } from "axios";
 
 interface HomeProps {
-  playerService: PlayerService
+  playerService: PlayerServiceImpl
 }
 
 export default function Home({playerService}: HomeProps) {
