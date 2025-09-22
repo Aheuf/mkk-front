@@ -16,10 +16,10 @@ export default function RegisterForm({ registrationStatus, onSubmit }: RegisterF
   useEffect(() => {
     if (registrationStatus === REGISTRATION_STATUS.FULL) {
         Swal.fire({
-        title: `La liste des joueurs est complète pour ${new Date().getFullYear()}. !`,
-        text: `Si tu t'inscris maintenant, tu seras ajouté à la liste d'attente pour ${new Date().getFullYear() + 1}.`,
+        title: `La liste des joueurs est complète pour ${new Date().getFullYear()} !`,
+        text: `Si tu t'inscris maintenant, tu seras ajouté.e à la liste d'attente pour ${new Date().getFullYear() + 1}.`,
         heightAuto:false,
-        icon: "info",
+        icon: "warning",
         confirmButtonText: "ok",
         position: "center"
       });
