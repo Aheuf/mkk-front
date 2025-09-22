@@ -14,7 +14,7 @@ export class PlayerServiceImpl implements PlayerService{
   }
 
   async getRegistrationStatus(): Promise<REGISTRATION_STATUS> {
-    return (await axios.get(`${BASE_URL_SERVICE}/registration_status`)).data;
+    return (await axios.get(`${BASE_URL_SERVICE}/registration_status`)).data.status;
   }
 
   async getPlayers(): Promise<Player[]> {
