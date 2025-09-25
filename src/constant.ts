@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 
-export const WEB_SOCKET_URL = `ws:${import.meta.env.DOMAIN}`;
-export const BASE_URL_SERVICE =  `//${import.meta.env.DOMAIN}`;
+export const WEB_SOCKET_URL = `ws:${import.meta.env.VITE_DOMAIN}`;
+export const BASE_URL_SERVICE = `//${import.meta.env.VITE_DOMAIN}`;
 
 export enum ROLE {
   ADMIN = "ADMIN",
