@@ -44,22 +44,22 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
 
   const getLifeColor = () => {
     switch (player?.pv) {
-      case 3: return "green";
-      case 2: return "orange";
-      case 1: return "red";
-      default: return "slate";
+      case 3: return "text-green-500";
+      case 2: return "text-orange-500";
+      case 1: return "text-red-500";
+      default: return "text-slate-500";
     }
   }
 
   return (
-  <div className="grid grid-cols-1 grid-rows-12 p-5 h-screen">
+  <div className="grid grid-cols-1 grid-rows-12 p-5 h-full">
     <div className="row-span-1 justify-self-end self-start">
       <LogoutButton handleLogout={handleLogout} />
     </div>
-    <div className="row-span-11 grid grid-cols-1 grid-rows-12 mario-font text-white bg-white/50 py-5">
-      <h1 className="text-5xl row-span-1 text-center">{player?.username}</h1>
-      <p className={`flex items-center justify-center text-8xl text-${getLifeColor()}-500 row-span-9`}>{player?.pv}</p>
-      <div className="flex justify-center gap-10 row-span-2">
+    <div className="flex flex-col justify-between row-span-11 mario-font text-white bg-white/50 py-5 px-2">
+      <h1 className="text-5xl text-center">{player?.username}</h1>
+      <p className={`flex items-center justify-center text-8xl ${getLifeColor()}`}>{player?.pv}</p>
+      <div className="flex justify-center gap-10 row-span-2 items-end">
         <PlayerButton onClick={handleClick} variant={PLAYER_BUTTON_VARIANT.MINUS} size={PLAYER_BUTTON_SIZE.XL}/>
         <PlayerButton onClick={handleClick} variant={PLAYER_BUTTON_VARIANT.PLUS} size={PLAYER_BUTTON_SIZE.XL}/>
       </div>

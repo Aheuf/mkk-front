@@ -4,7 +4,7 @@
   src: url("./assets/font/SuperMario256.ttf");
 }
 
-body, html, #root {
+body, html, #root, #storybook-root{
   height: 100%;
 }
 
