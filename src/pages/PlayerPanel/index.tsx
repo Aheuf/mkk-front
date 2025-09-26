@@ -27,7 +27,7 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
 
       if (operator === PLAYER_BUTTON_VARIANT.PLUS && updatedPlayer.pv < 3) {
         updatedPlayer.pv += 1;
-      } else if (updatedPlayer.pv > 0) {
+      } else if (operator === PLAYER_BUTTON_VARIANT.MINUS && updatedPlayer.pv > 0) {
         updatedPlayer.pv -= 1;
       }
 
