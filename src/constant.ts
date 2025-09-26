@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-export const WEB_SOCKET_URL = `ws:${import.meta.env.VITE_DOMAIN}`;
+export const WEB_SOCKET_URL = `${window.location.href.includes("localhost") ? "ws":"wss"}:${import.meta.env.VITE_DOMAIN}`;
 export const BASE_URL_SERVICE = `//${import.meta.env.VITE_DOMAIN}`;
 
 export enum ROLE {
