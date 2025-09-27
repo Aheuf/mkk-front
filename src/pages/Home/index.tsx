@@ -17,7 +17,7 @@ export default function Home({playerService}: HomeProps) {
 
   useEffect(() => {
     playerService.getRegistrationStatus().then(setRegistrationStatus);
-  }, [playerService]);
+  }, []);
 
   const handleConnect = (payload: LoginPlayerPayload) => {
     playerService.login(payload).then(player => {
