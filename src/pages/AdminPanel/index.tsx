@@ -6,7 +6,7 @@ import LogoutButton from "../../components/LogoutButton";
 import { useNavigate } from "react-router";
 import PlayersTable from "../../components/PlayersTable";
 import Swal from "sweetalert2";
-import { handle401And403Errors } from "../utils";
+import { handle401And403Errors, handleRateLimiter } from "../utils";
 import { ServerSentEventType, type ServerSentEventPayload } from "../../models/ServerSentEvent";
 
 interface AdminPanelProps {
@@ -23,6 +23,7 @@ export default function AdminPanel({ playerService }: AdminPanelProps) {
     playerService.getPlayers()
       .then(players => setPlayersList(new Map(players.map(p => [p.username, p]))))
       .then(() => setIsLoading(false))
+      .catch(handleRateLimiter)
       .catch(e => handle401And403Errors(e, navigate));
   }, []);
 
@@ -47,7 +48,7 @@ export default function AdminPanel({ playerService }: AdminPanelProps) {
 
   const handleOnClickPlayerHp = (player: Player, newPv: number) => {
     const updatedPlayer = { ...player, pv: Math.max(0, Math.min(3, newPv)) };
-    playerService.updatePlayer(updatedPlayer).catch(e => handle401And403Errors(e, navigate));
+    playerService.updatePlayer(updatedPlayer).catch(handleRateLimiter).catch(e => handle401And403Errors(e, navigate));
 
     const updatedPlayersList = new Map(playersList);
     updatedPlayersList.set(player.username, updatedPlayer);
@@ -70,7 +71,8 @@ export default function AdminPanel({ playerService }: AdminPanelProps) {
         playersList.delete(player.username);
         setPlayersList(updatedPlayersList);
       }
-    }).catch(e => handle401And403Errors(e, navigate));
+    }).catch(handleRateLimiter)
+      .catch(e => handle401And403Errors(e, navigate));
   };
 
   const handleLogout = async () => {

@@ -5,7 +5,7 @@ import { PlayerServiceImpl } from "../../services/PlayerService/PlayerServiceImp
 import { Toast } from "../../constant";
 import LogoutButton from "../../components/LogoutButton";
 import PlayerButton, { PLAYER_BUTTON_SIZE, PLAYER_BUTTON_VARIANT } from "../../components/PlayerButton";
-import { handle401And403Errors } from "../utils";
+import { handle401And403Errors, handleRateLimiter } from "../utils";
 import { ServerSentEventType, type ServerSentEventPayload } from "../../models/ServerSentEvent";
 
 interface PlayerPanelProps {
@@ -36,7 +36,7 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
 
   useEffect(() => {
     if (!player) {
-      playerService.getMyPlayer().then(setPlayer).catch(e => handle401And403Errors(e, navigate));
+      playerService.getMyPlayer().then(setPlayer).catch(e => handleRateLimiter(e)).catch(e => handle401And403Errors(e, navigate));
     }
   }, []);
 
@@ -50,7 +50,7 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
         updatedPlayer.pv -= 1;
       }
 
-      playerService.updatePlayer(updatedPlayer).catch(e => handle401And403Errors(e, navigate));
+      playerService.updatePlayer(updatedPlayer).catch(e => handleRateLimiter(e)).catch(e => handle401And403Errors(e, navigate));
       setPlayer(updatedPlayer);
     }
   }

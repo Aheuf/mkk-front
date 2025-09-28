@@ -16,3 +16,11 @@ export function handle401And403Errors(e: any, navigate: NavigateFunction) {
     Toast.fire(`Erreur inconnue`, e, "error");
     throw e;
 }
+
+export function handleRateLimiter(e: any) {
+    if (e instanceof AxiosError && e.status === 429) {
+        Toast.fire("Trop de requêtes !", "Tu arrêtes de spam, calmos l'asticot", "warning");
+        return;
+    }
+    throw e;
+}
