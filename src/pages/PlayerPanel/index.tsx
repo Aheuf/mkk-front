@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import type { Player } from "../../models/Player";
 import { useLocation, useNavigate, } from "react-router";
 import { PlayerServiceImpl } from "../../services/PlayerService/PlayerServiceImpl";
-import { Toast, WEB_SOCKET_URL } from "../../constant";
+import { Toast } from "../../constant";
 import LogoutButton from "../../components/LogoutButton";
 import PlayerButton, { PLAYER_BUTTON_SIZE, PLAYER_BUTTON_VARIANT } from "../../components/PlayerButton";
+import { handle401And403Errors, handleRateLimiter } from "../utils";
+import { ServerSentEventType, type ServerSentEventPayload } from "../../models/ServerSentEvent";
 
 interface PlayerPanelProps {
   playerService: PlayerServiceImpl
@@ -13,13 +15,30 @@ interface PlayerPanelProps {
 export default function PlayerPanel({ playerService }: PlayerPanelProps) {
   const navigate = useNavigate();
   const [player, setPlayer] = useState<Player | null>(useLocation().state);
-  const websocket = useMemo(() => new WebSocket(WEB_SOCKET_URL), []);
+  const serverSentEvents = useMemo(playerService.getPlayersEventSource, []);
+
+  useEffect(() => {
+    serverSentEvents.onmessage = (message: MessageEvent) => {
+      const data: ServerSentEventPayload = JSON.parse(message.data);
+      if (!player) return;
+
+      switch (data.action) {
+        case ServerSentEventType.DELETE:
+          Toast.fire("Votre compte a été supprimé", "", "warning");
+          navigate("/");
+          break;
+        case ServerSentEventType.UPDATE:
+          setPlayer({...player, pv: data.pv});
+          break;
+      }
+    }
+  }, [player]);
 
   useEffect(() => {
     if (!player) {
-      playerService.getMyPlayer().then(setPlayer);
+      playerService.getMyPlayer().then(setPlayer).catch(e => handleRateLimiter(e)).catch(e => handle401And403Errors(e, navigate));
     }
-  }, [player,playerService]);
+  }, []);
 
   const handleClick = (operator: PLAYER_BUTTON_VARIANT) => {
     if (player) {
@@ -31,7 +50,7 @@ export default function PlayerPanel({ playerService }: PlayerPanelProps) {
         updatedPlayer.pv -= 1;
       }
 
-      playerService.updatePlayer(updatedPlayer).then(() => websocket.send(`${player.username} a ${player.pv} PV (${operator}1)`));
+      playerService.updatePlayer(updatedPlayer).catch(e => handleRateLimiter(e)).catch(e => handle401And403Errors(e, navigate));
       setPlayer(updatedPlayer);
     }
   }

@@ -35,5 +35,9 @@ export class PlayerServiceMock implements PlayerService {
     deletePlayer(_player: Player): Promise<void> {
         throw new Error("Method not implemented.");
     }
-   
+
+    getPlayersEventSource(): EventSource {
+        return new EventSource("");
+    }
+
 }

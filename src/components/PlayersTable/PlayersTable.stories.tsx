@@ -23,3 +23,11 @@ export const Basic: Story = {
                 ]} onClickPlayerHp={() => { }} onClickPlayerDelete={() => { }} />
         </div>)
 };
+
+export const Loading: Story = {
+    render: () => (
+        <div style={{ backgroundColor: "#212121", padding: 20 }}>
+            <PlayersTable className="w-full"
+                isLoading={true} players={[]} onClickPlayerHp={() => { }} onClickPlayerDelete={() => { }} />
+        </div>)
+};
