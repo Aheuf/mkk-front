@@ -30,7 +30,14 @@ export class PlayerServiceImpl implements PlayerService{
   }
 
   async createPlayer(payload: NewPlayerPayload): Promise<ROLE> {
-    return (await axios.post(`${BASE_URL_SERVICE}/register`, payload)).data;
+  const sanitizedPayload = {
+    ...payload,
+    nom: payload.nom.trim(),
+    prenom: payload.prenom.trim(),
+    username: payload.username.trim(),
+  };
+
+    return (await axios.post(`${BASE_URL_SERVICE}/register`, sanitizedPayload)).data;
   }
 
   async deletePlayer(player: Player): Promise<void> {
