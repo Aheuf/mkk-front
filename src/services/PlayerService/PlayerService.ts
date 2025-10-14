@@ -19,4 +19,6 @@ export interface PlayerService {
   createPlayer(payload: NewPlayerPayload): Promise<ROLE>;
 
   deletePlayer(player: Player): Promise<void>;
+
+  getPlayersEventSource(): EventSource;
 }

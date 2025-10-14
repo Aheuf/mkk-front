@@ -6,6 +6,7 @@ import { REGISTRATION_STATUS, ROLE, Toast } from "../../constant";
 import type { LoginPlayerPayload, NewPlayerPayload } from "../../models/Player";
 import { useNavigate } from "react-router";
 import { AxiosError } from "axios";
+import { handleRateLimiter } from "../utils";
 
 interface HomeProps {
   playerService: PlayerServiceImpl
@@ -17,12 +18,13 @@ export default function Home({playerService}: HomeProps) {
 
   useEffect(() => {
     playerService.getRegistrationStatus().then(setRegistrationStatus);
-  }, [playerService]);
+  }, []);
 
   const handleConnect = (payload: LoginPlayerPayload) => {
     playerService.login(payload).then(player => {
       navigate(player.role === ROLE.ADMIN ? "/admin" : "/player", {state: player});
     })
+    .catch(handleRateLimiter)
     .catch(e => {
       if (e instanceof AxiosError && e.response?.data) {
         Toast.fire({icon: "error", title: "Erreur", text: e.response.data});

@@ -36,4 +36,8 @@ export class PlayerServiceImpl implements PlayerService{
   async deletePlayer(player: Player): Promise<void> {
     return await axios.delete(`${BASE_URL_SERVICE}/players/${player.username}`, { withCredentials: true });
   }
+
+  getPlayersEventSource(): EventSource {
+      return new EventSource(`${BASE_URL_SERVICE}/players/events`, { withCredentials: true });
+  }
 }
